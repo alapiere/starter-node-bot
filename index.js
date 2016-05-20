@@ -51,7 +51,7 @@ controller.hears(['hello', 'hi'], ['direct_mention'], function (bot, message) {
     });
 })
 
-controller.hears(['hello', 'hi'], ['direct_message'], wit.hears,function (bot, message) {
+controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
         if (user && user.name) {
