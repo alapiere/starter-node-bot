@@ -222,7 +222,6 @@ function formatUptime(uptime) {
     if (uptime != 1) {
         unit = unit + 's';
     }
-
     uptime = uptime + ' ' + unit;
     return uptime;
 }
