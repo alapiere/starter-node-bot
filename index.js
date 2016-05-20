@@ -1,5 +1,9 @@
 
 var Botkit = require('botkit')
+var wit = require('botkit-middleware-witai')({
+    token: FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ
+});
+
 var os = require('os');
 
 var token = process.env.SLACK_TOKEN
@@ -9,6 +13,10 @@ var controller = Botkit.slackbot({
   retry: Infinity,
   debug: true
 })
+
+//plugin wit
+controller.middleware.receive.use(wit.receive);
+
 
 // Assume single team mode if we have a SLACK_TOKEN
 if (token) {
@@ -43,7 +51,7 @@ controller.hears(['hello', 'hi'], ['direct_mention'], function (bot, message) {
     });
 })
 
-controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
+controller.hears(['hello', 'hi'], ['direct_message'], wit.hears,function (bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
         if (user && user.name) {
