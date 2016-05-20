@@ -1,7 +1,7 @@
 
 var Botkit = require('botkit')
 var wit = require('botkit-middleware-witai')({
-    token: FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ
+    token: 'FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ'
 });
 
 var os = require('os');
