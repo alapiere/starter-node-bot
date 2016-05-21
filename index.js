@@ -1,14 +1,15 @@
 
 var Botkit = require('botkit')
-/*
+
 //IN DOCKER : RUN npm i botkit-middleware-witai
 var wit = require('botkit-middleware-witai')({
     token: 'FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ'
 });
-*/
+
+/*
 var Witbot = require('witbot')
 var witbot = Witbot('FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ')
-
+*/
 
 var os = require('os');
 
@@ -20,10 +21,9 @@ var controller = Botkit.slackbot({
   debug: true
 })
 
-/*
+
 //plugin wit
 controller.middleware.receive.use(wit.receive);
-*/
 
 // Assume single team mode if we have a SLACK_TOKEN
 if (token) {
@@ -73,8 +73,8 @@ controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
 })
 
 // Any direct message --> send to wit.ai
-controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
-  var wit = witbot.process(message.text, bot, message)
+controller.hears('.*', ['direct_message', 'direct_mention'], wit.hears, function (bot, message) {
+  //var wit = witbot.process(message.text, bot, message)
    
    wit.hears('congés', 0.53, function (bot, message, outcome) {
 
