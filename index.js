@@ -51,6 +51,17 @@ controller.hears(['hello', 'hi'], ['direct_mention'], [wit.hears],function (bot,
     });
 })
 
+controller.hears(['hello', 'hi'], ['direct_mention'], [wit.hears],function (bot, message) {
+
+    controller.storage.users.get(message.user, function(err, user) {
+        if (user && user.name) {
+            bot.reply(message, 'Hello ' + user.name + '!!');
+        } else {
+            bot.reply(message, 'Hello.');
+        }
+    });
+})
+
 controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
@@ -63,8 +74,30 @@ controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
   bot.reply(message, 'It\'s nice to talk to you directly.')
 })
 
-controller.hears('.*', ['mention'], function (bot, message) {
-  bot.reply(message, 'You really do care about me. :heart:')
+controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
+  var wit = witbot.process(message.text, bot, message)
+   
+   wit.hears('hello', 0.53, function (bot, message, outcome) {
+    bot.startConversation(message, function (_, convo) {
+      convo.say('Hello!')
+      convo.ask('How are you?', function (response, convo) {
+        witbot.process(response.text)
+          .hears('good', 0.5, function (outcome) {
+            convo.say('I am so glad to hear it!')
+            convo.next()
+          })
+          .hears('bad', 0.5, function (outcome) {
+            convo.say('I\'m sorry, that is terrible')
+            convo.next()
+          })
+          .otherwise(function (outcome) {
+            convo.say('I\'m cofused')
+            convo.repeat()
+            convo.next()
+          })
+      })
+    })
+  
 })
 
 controller.hears('help', ['direct_message', 'direct_mention'], function (bot, message) {
