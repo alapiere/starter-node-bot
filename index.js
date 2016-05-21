@@ -48,7 +48,7 @@ controller.on('bot_channel_join', function (bot, message) {
 })
 
 // Hi + Direct Mention
-controller.hears(['hello', 'hi'], ['direct_mention'], [wit.hears],function (bot, message) {
+controller.hears(['hello', 'hi'], ['direct_mention'],function (bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
         if (user && user.name) {
