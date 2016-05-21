@@ -97,7 +97,7 @@ controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, mess
           })
       })
     })
-  
+  })  
 })
 
 controller.hears('help', ['direct_message', 'direct_mention'], function (bot, message) {
