@@ -1,8 +1,14 @@
 
 var Botkit = require('botkit')
+/*
+//IN DOCKER : RUN npm i botkit-middleware-witai
 var wit = require('botkit-middleware-witai')({
     token: 'FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ'
 });
+*/
+var Witbot = require('witbot')
+var witbot = Witbot(witToken)
+
 
 var os = require('os');
 
@@ -14,9 +20,10 @@ var controller = Botkit.slackbot({
   debug: true
 })
 
+/*
 //plugin wit
 controller.middleware.receive.use(wit.receive);
-
+*/
 
 // Assume single team mode if we have a SLACK_TOKEN
 if (token) {
@@ -40,6 +47,7 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 })
 
+// Hi + Direct Mention
 controller.hears(['hello', 'hi'], ['direct_mention'], [wit.hears],function (bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
@@ -51,17 +59,7 @@ controller.hears(['hello', 'hi'], ['direct_mention'], [wit.hears],function (bot,
     });
 })
 
-controller.hears(['hello', 'hi'], ['direct_mention'], [wit.hears],function (bot, message) {
-
-    controller.storage.users.get(message.user, function(err, user) {
-        if (user && user.name) {
-            bot.reply(message, 'Hello ' + user.name + '!!');
-        } else {
-            bot.reply(message, 'Hello.');
-        }
-    });
-})
-
+//Hi + Direct message
 controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
 
     controller.storage.users.get(message.user, function(err, user) {
@@ -74,6 +72,7 @@ controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
   bot.reply(message, 'It\'s nice to talk to you directly.')
 })
 
+// Any direct message --> send to wit.ai
 controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
   var wit = witbot.process(message.text, bot, message)
    
@@ -100,6 +99,8 @@ controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, mess
   })  
 })
 
+
+//HELP
 controller.hears('help', ['direct_message', 'direct_mention'], function (bot, message) {
   var help = 'I will respond to the following messages: \n' +
       '`bot hi` for a simple message.\n' +
@@ -109,6 +110,7 @@ controller.hears('help', ['direct_message', 'direct_mention'], function (bot, me
   bot.reply(message, help)
 })
 
+//Attachment
 controller.hears(['attachment'], ['direct_message', 'direct_mention'], function (bot, message) {
   var text = 'Beep Beep Boop is a ridiculously simple hosting platform for your Slackbots.'
   var attachments = [{
@@ -122,6 +124,7 @@ controller.hears(['attachment'], ['direct_message', 'direct_mention'], function 
   }]
 })
 
+//Shutdown conversation
 controller.hears(['shutdown'], 'direct_message,direct_mention,mention', function(bot, message) {
 
   bot.startConversation(message, function(err, convo) {
