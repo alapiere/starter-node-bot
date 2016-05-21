@@ -7,6 +7,7 @@ var wit = require('botkit-middleware-witai')({
 });
 
 /*
+RUN npm i botkit witbot
 var Witbot = require('witbot')
 var witbot = Witbot('FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ')
 */
