@@ -7,7 +7,7 @@ var wit = require('botkit-middleware-witai')({
 });
 */
 var Witbot = require('witbot')
-var witbot = Witbot(witToken)
+var witbot = Witbot('FMDGHRBMTWUMUNNZJN72YXZ6RAA4BRWZ')
 
 
 var os = require('os');
