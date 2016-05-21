@@ -76,7 +76,7 @@ controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
 // Any direct message --> send to wit.ai
 controller.hears('.*', ['direct_message', 'direct_mention'], wit.hears, function (bot, message) {
   //var wit = witbot.process(message.text, bot, message)
-   
+   bot.reply('wit hello')
    wit.hears('congés', 0.53, function (bot, message, outcome) {
 
       convo.say('leave !')
